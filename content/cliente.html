@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JK Falg - Cliente</title>
+  <link rel="stylesheet" href="../styles/cliente.css">
+</head>
+<body>
+  <header>
+    <div class="logoLogin">
+      <img src="../imagens/logo.png" alt="Logo do site">
+      <div class="iconesCabecalho">
+        <div class="iconeNome" id="configBtn">
+          <span class="icon" id="iconeConfig">⚙️</span><br>
+          <span class="textoMenu">Config</span>
+        </div>
+        <div id="sairBtn" class="iconeNome">
+          <span class="icon">👤</span><br>
+          <span class="textoMenu">Sair</span>
+        </div>
+      </div>
+    </div>
+    <div class="areaPesquisa">
+      <button id="abrirFiltroBtn">Filtro</button>
+      <section id="modalFiltro" class="filterModal">
+        <div class="filterModalConteudo">
+          <span class="fechar" id="fecharModal">×</span>
+          <h3>Selecione os Gêneros</h3>
+          <label><input type="checkbox" name="genero" value="terror"> Terror e Suspense</label><br>
+          <label><input type="checkbox" name="genero" value="drama"> Drama</label><br>
+          <label><input type="checkbox" name="genero" value="fantasiaFiccao"> Fantasia e Ficção</label><br>
+          <label><input type="checkbox" name="genero" value="bibliografia"> Bibliografia</label><br>
+          <label><input type="checkbox" name="genero" value="quadrinhos"> Quadrinhos</label><br>
+          <label><input type="checkbox" name="genero" value="romance"> Romance</label>
+        </div>
+      </section>
+      <input type="text" id="search" placeholder="Buscar por livros">
+      <button id="buscaBtn">🔍</button>
+    </div>
+  </header>
+  <main>
+    <section class="bemvindo">
+      <h2>BEM-VINDO, CLIENTE!</h2>
+      <div>
+        <p>O sistema de biblioteca virtual foi desenvolvido para automatizar e otimizar o gerenciamento de empréstimos de livros. Nele, os leitores podem: Consultar a disponibilidade de obras em tempo real; Realizar reservas de forma ágil; Explorar o acervo completo com buscas intuitivas; Receber indicações personalizadas com base em seu histórico de leitura. Tudo isso para garantir uma experiência mais eficiente e adaptada às necessidades dos usuários.</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Ano</th>
+              <th>Autor</th>
+              <th>Publicadora</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-livros">
+            <!-- Livros serão inseridos dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script src="../scripts/script.js"></script>
+  <script src="../scripts/livros.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente') || '{}');
+      console.log('Cliente: usuarioCorrente:', usuarioCorrente); // Debug
+      if (!usuarioCorrente.email) {
+        console.log();
+         alert('Faça login para acessar esta página.');
+         window.location.href = '../index.html';
+      }
+      exibirLivros('tabela-livros');
+      configurarBusca('search', 'tabela-livros');
+    });
+  </script>
+</body>
+</html>

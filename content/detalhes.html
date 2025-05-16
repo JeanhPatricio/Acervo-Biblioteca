@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JK Falg - Detalhes do Livro</title>
+  <link rel="stylesheet" href="../styles/detalhes.css">
+</head>
+<body>
+  <header>
+    <div class="logoLogin">
+      <img src="../imagens/logo.png" alt="Logo do site">
+      <div class="iconesCabecalho">
+        <div class="iconeNome" id="voltarBtn">
+          <span class="icon">⬅️</span><br>
+          <span class="textoMenu">Voltar</span>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="bemvindo">
+      <h2>DETALHES DO LIVRO</h2>
+      <div id="livro-detalhes">
+        <!-- Detalhes do livro serão inseridos dinamicamente -->
+        <p><strong>Nome:</strong> <span id="livro-nome"></span></p>
+        <p><strong>Ano:</strong> <span id="livro-ano"></span></p>
+        <p><strong>Autor:</strong> <span id="livro-autor"></span></p>
+        <p><strong>Publicadora:</strong> <span id="livro-publicadora"></span></p>
+        <!-- Placeholder para botão de reserva -->
+        <button id="reservarBtn" class="btn btn-primary">Reservar (em desenvolvimento)</button>
+      </div>
+    </section>
+  </main>
+  <script>
+    console.log('detalhes.html: sessionStorage:', sessionStorage.getItem('usuarioCorrente')); // Debug
+  </script>
+  <script src="../scripts/script.js"></script>
+  <script src="../scripts/livros.js"></script>
+  <script src="../scripts/detalhes.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JK Falg - Login</title>
+  <link rel="stylesheet" href="../styles/login.css">
+</head>
+<body>
+  <header>
+    <div class="logoLogin">
+      <img src="../imagens/logo.png" alt="Logo do site">
+      <div class="iconesCabecalho">
+        <div class="iconeNome" id="configBtn">
+          <span class="icon" id="iconeConfig">⚙️</span><br>
+          <span class="textoMenu">Config</span>
+        </div>
+        <div class="iconeNome" id="voltarBtn">
+          <a href="../index.html">
+            <span class="icon">⬅️</span><br>
+            <span class="textoMenu">Voltar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="form-box">
+      <form id="loginForm">
+        <h3 class="form-title">Login</h3>
+        <label for="tipoAcesso">Tipo de Acesso</label>
+        <select id="tipoAcesso" required>
+          <option value="cliente">Cliente</option>
+          <option value="bibliotecaria">Bibliotecária</option>
+        </select>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" required>
+
+        <button type="submit">Entrar</button>
+      </form>
+
+      <div id="novoUsuarioContainer">
+        <button id="btnNovoUsuario">Novo Usuário</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <button class="btn-close" id="fecharModal">×</button>
+        <h3>Novo Usuário</h3>
+      </div>
+      <div class="modal-body">
+        <form id="registerForm">
+          <label for="tipoAcessoReg">Tipo de Acesso</label>
+          <select id="tipoAcessoReg" required>
+            <option value="cliente">Cliente</option>
+            <option value="bibliotecaria">Bibliotecária</option>
+          </select>
+
+          <label for="txt_nome">Nome Completo</label>
+          <input type="text" id="txt_nome" required>
+
+          <label for="txt_email">Email</label>
+          <input type="email" id="txt_email" required>
+
+          <label for="txt_senha">Senha</label>
+          <input type="password" id="txt_senha" required>
+
+          <label for="txt_senha2">Confirmação de Senha</label>
+          <input type="password" id="txt_senha2" required>
+
+          <div class="modal-footer">
+            <button type="button" id="cancelar">Cancelar</button>
+            <button type="button" id="btn_salvar">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/login.js"></script>
+</body>
+</html>
