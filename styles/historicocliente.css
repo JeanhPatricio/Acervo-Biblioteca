@@ -1,0 +1,142 @@
+/* General */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f2f2f2;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* Header */
+header {
+  background: #ddd;
+  padding: 20px;
+}
+
+.logoLogin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 4px solid #1d4d36;
+  border-radius: 7px;
+  padding: 8px 15px;
+  background-color: #fff;
+}
+
+.logoLogin img {
+  width: 300px;
+}
+
+.iconesCabecalho {
+  display: flex;
+  gap: 20px;
+  margin-right: 10px;
+}
+
+.icon {
+  align-items: center;
+  font-size: 25px;
+}
+
+.iconeNome {
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.iconeNome:hover {
+  border-radius: 7px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 5px;
+}
+
+.textoMenu {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#voltarBtn a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Search and Filter */
+.areaPesquisa {
+  display: flex;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.areaPesquisa input {
+  width: 80%;
+  min-width: 40px;
+  border-radius: 10px;
+  font-size: 12px;
+  padding: 2px 5px;
+}
+
+#buscaBtn {
+  width: 30px;
+  border-radius: 10px;
+  background-color: #d3d3d3;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#buscaBtn:hover {
+  background-color: #145a32;
+}
+
+/* Main */
+.bemvindo {
+  font-size: 18px;
+  background: #fff;
+  padding: 20px;
+  margin: 25px auto;
+  width: 60%;
+  border: 6px solid #1d4d36;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+
+.bemvindo h2 {
+  color: #1d4d36;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Table */
+.table {
+  display: table;
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  display: table-cell;
+  padding: 8px;
+  border: 1px solid #ccc;
+  text-align: left;
+  word-break: break-word;
+  cursor: default;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.table tr:hover {
+  background-color: rgba(29, 77, 54, 0.1);
+}
+
+/* Status */
+.status-pendente {
+  color: #d9534f;
+  font-weight: bold;
+}
