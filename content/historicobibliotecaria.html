@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JK Falg - Histórico de Reservas</title>
+  <link rel="stylesheet" href="../styles/historicobibliotecaria.css">
+</head>
+<body>
+  <header>
+    <div class="logoLogin">
+      <img src="../imagens/logo.png" alt="Logo do site">
+      <div class="iconesCabecalho">
+        <div class="iconeNome" id="voltarBtn">
+          <a href="bibliotecaria.html">
+            <span class="icon">⬅️</span><br>
+            <span class="textoMenu">Voltar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="areaPesquisa">
+      <input type="text" id="search" placeholder="Buscar por nome, email ou livro">
+      <button id="buscaBtn">🔍</button>
+    </div>
+  </header>
+  <main>
+    <section class="bemvindo">
+      <h2>HISTÓRICO DE RESERVAS</h2>
+      <table id="tabela-emprestimos" class="table">
+        <thead>
+          <tr>
+            <th>Nome do Usuário</th>
+            <th>Email</th>
+            <th>Título do Livro</th>
+            <th>Data da Reserva</th>
+            <th>Data de Devolução</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="emprestimos-tbody">
+          <!-- Preenchido dinamicamente -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+  <script>
+    console.log('historicobibliotecaria.html: sessionStorage:', sessionStorage.getItem('usuarioCorrente'));
+  </script>
+  <script src="../scripts/livros.js"></script>
+  <script src="../scripts/historicobibliotecaria.js"></script>
+</body>
+</html>
