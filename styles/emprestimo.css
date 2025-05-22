@@ -73,8 +73,8 @@ a {
   background: #fff;
   padding: 20px;
   margin: 25px auto;
-  width: 60%;
-  max-width: 800px;
+  width: 80%;
+  max-width: 650px;
   border: 6px solid #1d4d36;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -88,7 +88,7 @@ a {
 }
 
 #emprestimo-detalhes {
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 #emprestimo-detalhes p {
@@ -97,13 +97,14 @@ a {
 
 #emprestimo-detalhes strong {
   display: inline-block;
-  width: 150px;
+  margin-bottom: 5px;
 }
 
 /* Input */
 input[type="date"] {
-  padding: 5px;
   border: 1px solid #ccc;
+  margin-left: 5px;
+  padding: 0 5px;
   border-radius: 5px;
   font-size: 14px;
 }
@@ -117,7 +118,8 @@ input[type="date"] {
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  margin: 10px 5px 0 0;
+  margin: 20px 5px 15px;
+  font-weight: bold;
 }
 
 .btn.btn-primary:hover {
@@ -127,4 +129,31 @@ input[type="date"] {
 .btn.btn-primary:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+
+
+/*MEDIA*/
+
+@media (max-width: 480px){
+  .bemvindo {
+  font-size: 15px;
+  background: #fff;
+  padding: 20px;
+  margin: 25px auto;
+  width: 80%;
+  max-width: 650px;
+  border: 6px solid #1d4d36;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+  
+  input[type="date"] {
+  border: 1px solid #ccc;
+  margin-left: 0px;
+  padding-left: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
 }
