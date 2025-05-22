@@ -191,6 +191,10 @@ header {
   font-weight: bold;
 }
 
+.table tr:hover {
+  background-color: rgba(29, 77, 54, 0.1);
+}
+
 .livro-link { text-decoration: none; color: inherit; }
 
   /*MEDIA*/
