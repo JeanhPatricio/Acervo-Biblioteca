@@ -78,7 +78,6 @@ a {
   border: 6px solid #1d4d36;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: left;
 }
 
 .bemvindo h2 {
@@ -135,7 +134,18 @@ input[type="date"] {
 
 /*MEDIA*/
 
+@media (max-width: 767px){
+.logoLogin img {
+  width: 250px;
+}
+
+}
+
 @media (max-width: 480px){
+  .logoLogin img {
+  width: 150px;
+}
+
   .bemvindo {
   font-size: 15px;
   background: #fff;
