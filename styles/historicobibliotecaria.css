@@ -81,6 +81,23 @@ a {
   justify-content: center;
 }
 
+.areaPesquisa button {
+  background-color: #d3d3d3;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+  width: 70px;
+  margin: 0 15px;
+  min-width: 60px;
+  border-radius: 10px;
+}
+
+.areaPesquisa button:hover {
+  background-color: #0000001a;
+}
+
 .areaPesquisa input {
   width: 80%;
   min-width: 40px;
@@ -93,13 +110,13 @@ a {
   width: 30px;
   border-radius: 10px;
   background-color: #d3d3d3;
-  color: black;
+  color: #000;
   cursor: pointer;
   font-weight: bold;
 }
 
 #buscaBtn:hover {
-  background-color: #145a32;
+  background-color: #0000001a;
 }
 
 /* Main */
@@ -108,7 +125,7 @@ a {
   background: #fff;
   padding: 20px;
   margin: 25px auto;
-  width: 80%;
+  width: 90%;
   max-width: 1200px;
   border: 6px solid #1d4d36;
   border-radius: 8px;
@@ -126,24 +143,24 @@ a {
 .table {
   display: table;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
   border-collapse: collapse;
 }
 
 .table th,
 .table td {
   display: table-cell;
-  padding: 8px;
+  padding: 8px 5px;
   border: 1px solid #ccc;
-  text-align: left;
+  text-align: center;
   word-break: break-word;
 }
 
 .table th:nth-child(1), .table td:nth-child(1) { min-width: 150px; } /* Nome */
-.table th:nth-child(2), .table td:nth-child(2) { min-width: 200px; } /* Email */
+.table th:nth-child(2), .table td:nth-child(2) { min-width: 150px; } /* Email */
 .table th:nth-child(3), .table td:nth-child(3) { min-width: 150px; } /* Título */
-.table th:nth-child(4), .table td:nth-child(4) { min-width: 120px; } /* Data da Reserva */
-.table th:nth-child(5), .table td:nth-child(5) { min-width: 120px; } /* Data de Devolução */
+.table th:nth-child(4), .table td:nth-child(4) { min-width: 120px; max-width: 140px; } /* Data da Reserva */
+.table th:nth-child(5), .table td:nth-child(5) { min-width: 120px; max-width: 140px; } /* Data de Devolução */
 .table th:nth-child(6), .table td:nth-child(6) { min-width: 150px; } /* Ações */
 
 .table th {
@@ -175,4 +192,155 @@ a {
 
 .btn.btn-primary:hover {
   background-color: #145a32;
+}
+
+
+/*MEDIA*/
+
+@media(max-width: 1201px){
+.bemvindo {
+  font-size: 17px;
+  background: #fff;
+  padding: 15px;
+  margin: 25px auto;
+  width: 90%;
+  max-width: 1200px;
+  border: 6px solid #1d4d36;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+
+.table th,
+.table td {
+  display: table-cell;
+  padding: 6px 2px;
+  border: 1px solid #ccc;
+  text-align: center;
+  word-break: break-word;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) { min-width: 110px; } /* Nome */
+.table th:nth-child(2), .table td:nth-child(2) { min-width: 110px; } /* Email */
+.table th:nth-child(3), .table td:nth-child(3) { min-width: 110px; } /* Título */
+.table th:nth-child(4), .table td:nth-child(4) { min-width: 80px; max-width: 100px; } /* Data da Reserva */
+.table th:nth-child(5), .table td:nth-child(5) { min-width: 80px; max-width: 100px; } /* Data de Devolução */
+.table th:nth-child(6), .table td:nth-child(6) { min-width: 110px; } /* Ações */
+}
+
+@media(max-width: 767px){
+  .logoLogin img {
+  width: 250px;
+}
+
+.bemvindo {
+  font-size: 14px;
+  background: #fff;
+  padding: 10px;
+  margin: 25px auto;
+  width: 92%;
+  max-width: 1200px;
+  border: 6px solid #1d4d36;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+
+.bemvindo h2{
+  font-size: 23px;
+}
+
+.table th,
+.table td {
+  display: table-cell;
+  padding: 6px 3px;
+  border: 1px solid #ccc;
+  text-align: center;
+  word-break: break-word;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) { min-width: 50px; } /* Nome */
+.table th:nth-child(2), .table td:nth-child(2) { min-width: 70px; } /* Email */
+.table th:nth-child(3), .table td:nth-child(3) { min-width: 70px; } /* Título */
+.table th:nth-child(4), .table td:nth-child(4) { min-width: 50px; max-width: 100px; } /* Data da Reserva */
+.table th:nth-child(5), .table td:nth-child(5) { min-width: 60px; max-width: 100px; } /* Data de Devolução */
+.table th:nth-child(6), .table td:nth-child(6) { min-width: 50px; } /* Ações */
+}
+
+@media(max-width: 480px){
+  .logoLogin img {
+  width: 250px;
+}
+
+.bemvindo {
+  font-size: 12px;
+  background: #fff;
+  padding: 5px;
+  margin: 25px auto;
+  width: 92%;
+  max-width: 1200px;
+  border: 6px solid #1d4d36;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+
+.table th,
+.table td {
+  display: table-cell;
+  padding: 3px 2px;
+  border: 1px solid #ccc;
+  text-align: center;
+  word-break: break-word;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) { min-width: 50px; } /* Nome */
+.table th:nth-child(2), .table td:nth-child(2) { min-width: 70px; } /* Email */
+.table th:nth-child(3), .table td:nth-child(3) { min-width: 70px; } /* Título */
+.table th:nth-child(4), .table td:nth-child(4) { min-width: 50px; max-width: 100px; } /* Data da Reserva */
+.table th:nth-child(5), .table td:nth-child(5) { min-width: 55px; max-width: 100px; } /* Data de Devolução */
+.table th:nth-child(6), .table td:nth-child(6) { min-width: 50px; } /* Ações */
+}
+
+@media(max-width: 440px){
+.logoLogin img {
+  width: 150px;
+}
+
+  .bemvindo {
+  font-size: 12px;
+  background: #fff;
+  padding: 2px;
+  margin: 25px auto;
+  width: 92%;
+  max-width: 1200px;
+  border: 6px solid #1d4d36;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  text-align: center;
+}
+
+.bemvindo h2{
+  font-size: 20px;
+}
+
+.table th,
+.table td {
+  display: table-cell;
+  padding: 3px 1px;
+  border: 1px solid #ccc;
+  text-align: center;
+  word-break: break-word;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) { min-width: 0px; } /* Nome */
+.table th:nth-child(2), .table td:nth-child(2) { min-width: 35px; } /* Email */
+.table th:nth-child(3), .table td:nth-child(3) { min-width: 0px; } /* Título */
+.table th:nth-child(4), .table td:nth-child(4) { min-width: 0px; max-width:100px; } /* Data da Reserva */
+.table th:nth-child(5), .table td:nth-child(5) { min-width: 30px; max-width: 100px; } /* Data de Devolução */
+.table th:nth-child(6), .table td:nth-child(6) { min-width: 38px; } /* Ações */
 }
