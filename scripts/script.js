@@ -35,3 +35,36 @@ document.addEventListener("DOMContentLoaded", function() {
     console.log('Atualizar Acervo button clicked');
   });
 });
+
+// Função para gerar UUID
+function generateUUID() {
+  const d = new Date().getTime();
+  const d2 = performance.now() * 1000 || 0;
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    let r = Math.random() * 16;
+    r = (d + r) % 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+// Dados iniciais dos livros
+const livrosIniciais = {
+  livros: [
+    { id: generateUUID(), nome: "Dom Quixote", ano: 1605, autor: "Miguel de Cervantes", publicadora: "Francisco de Robles", qtd: 1 },
+    { id: generateUUID(), nome: "1984", ano: 1949, autor: "George Orwell", publicadora: "Secker & Warburg", qtd: 1 },
+    { id: generateUUID(), nome: "O Senhor dos Anéis", ano: 1954, autor: "J.R.R. Tolkien", publicadora: "Allen & Unwin", qtd: 1 }
+  ]
+};
+
+// Inicializa os livros se não existirem no localStorage
+function initLivrosApp() {
+  const livrosJSON = localStorage.getItem('livros');
+  if (!livrosJSON) {
+    console.log('Dados de livros não encontrados no localStorage. Carregando dados iniciais.');
+    localStorage.setItem('livros', JSON.stringify(livrosIniciais));
+  }
+}
+
+// Exporta funções para uso em outros scripts
+window.generateUUID = generateUUID;
+window.initLivrosApp = initLivrosApp;
