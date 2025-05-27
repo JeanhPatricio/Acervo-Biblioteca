@@ -24,7 +24,21 @@
       </div>
     </div>
     <div class="areaPesquisa">
+      <button id="abrirFiltroBtn">Filtro</button>
+      <section id="modalFiltro" class="filterModal">
+        <div class="filterModalConteudo">
+          <span class="fechar" id="fecharModal">×</span>
+          <h3>Selecione os Gêneros</h3>
+          <label><input type="checkbox" name="genero" value="terror"> Terror e Suspense</label><br>
+          <label><input type="checkbox" name="genero" value="drama"> Drama</label><br>
+          <label><input type="checkbox" name="genero" value="fantasiaFiccao"> Fantasia e Ficção</label><br>
+          <label><input type="checkbox" name="genero" value="bibliografia"> Bibliografia</label><br>
+          <label><input type="checkbox" name="genero" value="quadrinhos"> Quadrinhos</label><br>
+          <label><input type="checkbox" name="genero" value="romance"> Romance</label>
+        </div>
+      </section>
       <input type="text" id="search" placeholder="Buscar por nome, autor ou publicadora">
+      <button id="buscaBtn">🔍</button>
     </div>
   </header>
   <main>
