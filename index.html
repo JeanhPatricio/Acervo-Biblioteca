@@ -24,21 +24,7 @@
       </div>
     </div>
     <div class="areaPesquisa">
-      <button id="abrirFiltroBtn">Filtro</button>
-      <section id="modalFiltro" class="filterModal">
-        <div class="filterModalConteudo">
-          <span class="fechar" id="fecharModal">×</span>
-          <h3>Selecione os Gêneros</h3>
-          <label><input type="checkbox" name="genero" value="terror"> Terror e Suspense</label><br>
-          <label><input type="checkbox" name="genero" value="drama"> Drama</label><br>
-          <label><input type="checkbox" name="genero" value="fantasiaFiccao"> Fantasia e Ficção</label><br>
-          <label><input type="checkbox" name="genero" value="bibliografia"> Bibliografia</label><br>
-          <label><input type="checkbox" name="genero" value="quadrinhos"> Quadrinhos</label><br>
-          <label><input type="checkbox" name="genero" value="romance"> Romance</label>
-        </div>
-      </section>
-      <input type="text" id="search" placeholder="Buscar por livros">
-      <button id="buscaBtn">🔍</button>
+      <input type="text" id="search" placeholder="Buscar por nome, autor ou publicadora">
     </div>
   </header>
   <main>
@@ -66,8 +52,9 @@
   <script src="/scripts/livros.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      exibirLivros('tabela-livros');
-      configurarBusca('search', 'tabela-livros');
+      initLivrosApp(); // Inicializa os livros a partir de script.js
+      exibirLivros('tabela-livros'); // Exibe os livros
+      configurarBusca('search', 'tabela-livros'); // Configura a busca
     });
   </script>
 </body>
