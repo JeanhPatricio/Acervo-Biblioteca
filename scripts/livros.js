@@ -12,7 +12,16 @@ function exibirLivros(tabelaId, filtro = '', isAdmin = false) {
   if (!tbody) return;
   tbody.innerHTML = '';
   const livros = carregarLivros();
-  const livrosFiltrados = livros.filter(l => l.nome.toLowerCase().includes(filtro.toLowerCase()));
+  
+  // Filtra livros por nome, autor ou publicadora
+  const livrosFiltrados = livros.filter(l => {
+    const termo = filtro.toLowerCase();
+    return (
+      l.nome.toLowerCase().includes(termo) ||
+      l.autor.toLowerCase().includes(termo) ||
+      l.publicadora.toLowerCase().includes(termo)
+    );
+  });
   
   livrosFiltrados.forEach(livro => {
     const tr = document.createElement('tr');
