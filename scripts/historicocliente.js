@@ -3,47 +3,7 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
   return false;
 };
 
-function carregarEmprestimos() {
-  const emprestimosJSON = localStorage.getItem('emprestimos');
-  if (!emprestimosJSON) {
-    console.warn('emprestimos not found in localStorage');
-    return [];
-  }
-  try {
-    return JSON.parse(emprestimosJSON);
-  } catch (e) {
-    console.error('Error parsing emprestimos:', e);
-    return [];
-  }
-}
-
-function formatarData(isoString) {
-  const date = new Date(isoString);
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    timeZone: 'UTC'
-  });
-}
-
-function calcularDataDevolucao(reservationDate) {
-  const date = new Date(reservationDate);
-  date.setUTCDate(date.getUTCDate() + 7);
-  return formatarData(date.toISOString());
-}
-
-function isOverdue(loan) {
-  const now = new Date();
-  if (loan.dataDevolucao) {
-    return new Date(loan.dataDevolucao) < now;
-  }
-  const loanDate = new Date(loan.data);
-  const deadline = new Date(loanDate.getTime() + 7 * 24 * 60 * 60 * 1000);
-  return now > deadline;
-}
-
-function exibirEmprestimos(termoBusca = '') {
+async function exibirEmprestimos(termoBusca = '') {
   const tbody = document.getElementById('emprestimos-tbody');
   if (!tbody) {
     console.error('emprestimos-tbody not found');
@@ -51,8 +11,8 @@ function exibirEmprestimos(termoBusca = '') {
   }
 
   tbody.innerHTML = '';
-  const emprestimos = carregarEmprestimos();
-  const livros = carregarLivros();
+  const emprestimos = window.carregarEmprestimos();
+  const livros = await window.carregarLivros();
   const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente') || '{}');
 
   if (!usuarioCorrente.id) {
@@ -65,21 +25,21 @@ function exibirEmprestimos(termoBusca = '') {
     const termoLower = termoBusca.toLowerCase();
     return (
       emprestimo.usuarioId === usuarioCorrente.id &&
-      livro.nome.toLowerCase().includes(termoLower)
+      (livro.nome || '').toLowerCase().includes(termoLower)
     );
   });
 
   emprestimosFiltrados.forEach((emprestimo, index) => {
     const livro = Array.isArray(livros) ? livros.find(l => l.id === emprestimo.livroId) || { nome: 'Desconhecido', ano: 'Desconhecido', autor: 'Desconhecido' } : { nome: 'Desconhecido', ano: 'Desconhecido', autor: 'Desconhecido' };
-    const isLoanOverdue = emprestimo.ativo && isOverdue(emprestimo);
+    const isLoanOverdue = emprestimo.ativo && window.isOverdue(emprestimo);
     const status = emprestimo.ativo ? (isLoanOverdue ? 'Pendente' : 'Ativo') : 'Devolvido';
-    const returnDate = emprestimo.dataDevolucao ? formatarData(emprestimo.dataDevolucao) : (emprestimo.ativo ? calcularDataDevolucao(emprestimo.data) : formatarData(emprestimo.data));
+    const returnDate = emprestimo.dataDevolucao ? window.formatarData(emprestimo.dataDevolucao) : (emprestimo.ativo ? window.calcularDataDevolucao(emprestimo.data) : window.formatarData(emprestimo.data));
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${livro.nome}</td>
       <td>${livro.ano}</td>
       <td>${livro.autor}</td>
-      <td>${formatarData(emprestimo.data)}</td>
+      <td>${window.formatarData(emprestimo.data)}</td>
       <td>${returnDate}</td>
       <td><span class="${status === 'Pendente' ? 'status-pendente' : ''}">${status}</span></td>
     `;
@@ -91,7 +51,7 @@ function exibirEmprestimos(termoBusca = '') {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('historicocliente.js loaded');
 
   const usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
@@ -104,13 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  exibirEmprestimos();
+  await exibirEmprestimos();
 
   const searchInput = document.getElementById('search');
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       console.log('Search input:', searchInput.value);
-      exibirEmprestimos(searchInput.value);
+      exibirEmprestimos(searchInput.value).catch(error => {
+        console.error('Error in search:', error);
+      });
     });
   } else {
     console.error('search input not found');
@@ -120,7 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (buscaBtn) {
     buscaBtn.addEventListener('click', () => {
       console.log('Busca button clicked:', searchInput?.value);
-      exibirEmprestimos(searchInput?.value || '');
+      exibirEmprestimos(searchInput?.value || '').catch(error => {
+        console.error('Error in search:', error);
+      });
     });
   } else {
     console.error('buscaBtn not found');
