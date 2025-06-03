@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente') || '{}');
   if (!usuarioCorrente.email) {
     alert('Faça login para acessar esta página.');
@@ -12,39 +12,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const LIVROS_KEY = 'livros';
   let db_livros = { livros: [] };
 
-  function generateUUID() {
-    const d = new Date().getTime();
-    const d2 = performance.now() * 1000 || 0;
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      let r = Math.random() * 16;
-      r = (d + r) % 16 | 0;
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
+  // Inicializa os livros usando a função global
+  window.initLivrosApp();
+
+  // Carrega os livros do localStorage após inicialização
+  async function loadLivrosFromStorage() {
+    db_livros.livros = await window.carregarLivros();
+    await window.exibirLivros('tabela-livros', '', true);
+    window.configurarBusca('search', 'tabela-livros', true);
   }
 
-  const livrosIniciais = {
-    livros: [
-      { id: generateUUID(), nome: "Dom Quixote", ano: 1605, autor: "Miguel de Cervantes", publicadora: "Francisco de Robles", qtd: 1 },
-      { id: generateUUID(), nome: "1984", ano: 1949, autor: "George Orwell", publicadora: "Secker & Warburg", qtd: 1 },
-      { id: generateUUID(), nome: "O Senhor dos Anéis", ano: 1954, autor: "J.R.R. Tolkien", publicadora: "Allen & Unwin", qtd: 1 }
-    ]
-  };
-
-  function initLivrosApp() {
-    const livrosJSON = localStorage.getItem(LIVROS_KEY);
-    if (!livrosJSON) {
-      console.log('Dados de livros não encontrados no localStorage. Carregando dados iniciais.');
-      db_livros = livrosIniciais;
-      localStorage.setItem(LIVROS_KEY, JSON.stringify(livrosIniciais));
-    } else {
-      db_livros = JSON.parse(livrosJSON);
-    }
-    exibirLivros('tabela-livros', '', true);
-    configurarBusca('search', 'tabela-livros', true);
-  }
+  // Chama a função de carregamento após a inicialização
+  await loadLivrosFromStorage();
 
   function adicionarLivro(nome, ano, autor, publicadora, qtd) {
-    const id = generateUUID();
+    const id = window.generateUUID();
     const livro = { id, nome, ano, autor, publicadora, qtd };
     db_livros.livros.push(livro);
     localStorage.setItem(LIVROS_KEY, JSON.stringify(db_livros));
@@ -71,35 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return db_livros.livros.find(l => l.id === id);
   }
 
-  function exibirLivros(tableId, termoBusca = '', isAdmin = false) {
-    const tbody = document.getElementById(tableId);
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    let livros = db_livros.livros;
-    if (termoBusca) {
-      livros = livros.filter(livro =>
-        livro.nome.toLowerCase().includes(termoBusca.toLowerCase())
-      );
-    }
-    livros.forEach(livro => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${livro.nome}</td>
-        <td>${livro.ano}</td>
-        <td>${livro.autor}</td>
-        <td>${livro.publicadora}</td>
-        <td>${livro.qtd}</td>
-        ${isAdmin ? `
-          <td>
-            <button class="btn btn-warning" onclick="prepararEditar('${livro.id}')">Editar</button>
-            <button class="btn btn-danger" onclick="deletarLivro('${livro.id}')">Deletar</button>
-          </td>
-        ` : ''}
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
   function prepararAdicionar() {
     document.getElementById('livro-form').reset();
     document.getElementById('livro-id').value = '';
@@ -120,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('livroModal').style.display = 'block';
   }
 
-  function salvarLivro(event) {
+  async function salvarLivro(event) {
     event.preventDefault();
     const id = document.getElementById('livro-id').value;
     const nome = document.getElementById('nome').value.trim();
@@ -148,14 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
       adicionarLivro(nome, ano, autor, publicadora, qtd);
     }
 
-    exibirLivros('tabela-livros', '', true);
+    await window.exibirLivros('tabela-livros', '', true);
     document.getElementById('livroModal').style.display = 'none';
   }
 
-  function deletarLivro(id) {
+  async function deletarLivro(id) {
     if (confirm('Tem certeza que deseja deletar este livro?')) {
       removerLivro(id);
-      exibirLivros('tabela-livros', '', true);
+      await window.exibirLivros('tabela-livros', '', true);
     }
   }
 
@@ -172,8 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
       fecharModal();
     }
   });
-
-  initLivrosApp();
 
   window.prepararAdicionar = prepararAdicionar;
   window.prepararEditar = prepararEditar;
