@@ -3,68 +3,8 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
   return false;
 };
 
-function carregarUsuarios() {
-  const usuariosJSON = localStorage.getItem('db_usuarios');
-  if (!usuariosJSON) {
-    console.warn('db_usuarios not found in localStorage');
-    return [];
-  }
-  try {
-    const parsed = JSON.parse(usuariosJSON);
-    if (parsed && Array.isArray(parsed.usuarios)) {
-      return parsed.usuarios;
-    }
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.error('Error parsing db_usuarios:', e);
-    return [];
-  }
-}
-
-function carregarEmprestimos() {
-  const emprestimosJSON = localStorage.getItem('emprestimos');
-  if (!emprestimosJSON) {
-    console.warn('emprestimos not found in localStorage');
-    return [];
-  }
-  try {
-    return JSON.parse(emprestimosJSON);
-  } catch (e) {
-    console.error('Error parsing emprestimos:', e);
-    return [];
-  }
-}
-
-function salvarEmprestimos(emprestimos) {
-  localStorage.setItem('emprestimos', JSON.stringify(emprestimos));
-}
-
-function formatarData(isoString) {
-  const date = new Date(isoString);
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    timeZone: 'UTC'
-  });
-}
-
-function calcularDataDevolucao(reservationDate) {
-  const date = new Date(reservationDate);
-  date.setUTCDate(date.getUTCDate() + 7);
-  return formatarData(date.toISOString());
-}
-
-function formatarDataParaInput(isoString) {
-  const date = new Date(isoString);
-  const year = date.getUTCFullYear();
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
 function devolverLivro(emprestimoIndex) {
-  let emprestimos = carregarEmprestimos();
+  let emprestimos = window.carregarEmprestimos();
   const emprestimo = emprestimos[emprestimoIndex];
   if (!emprestimo.ativo) {
     alert('Este livro já foi devolvido.');
@@ -74,7 +14,7 @@ function devolverLivro(emprestimoIndex) {
   const now = new Date();
   emprestimos[emprestimoIndex].ativo = false;
   emprestimos[emprestimoIndex].dataDevolucao = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())).toISOString();
-  salvarEmprestimos(emprestimos);
+  window.salvarEmprestimos(emprestimos);
 
   const livrosJSON = localStorage.getItem('livros');
   if (livrosJSON) {
@@ -99,11 +39,11 @@ function devolverLivro(emprestimoIndex) {
   }
   const dataDevolucaoInput = document.getElementById('emprestimo-data-devolucao');
   if (dataDevolucaoInput) {
-    dataDevolucaoInput.value = formatarDataParaInput(new Date().toISOString());
+    dataDevolucaoInput.value = window.formatarDataParaInput(new Date().toISOString());
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('emprestimo.js loaded');
   const usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
   console.log('DOMContentLoaded usuarioCorrente:', usuarioCorrenteJSON);
@@ -123,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const emprestimos = carregarEmprestimos();
+  const emprestimos = window.carregarEmprestimos();
   const emprestimo = emprestimos[emprestimoIndex];
 
   if (!emprestimo) {
@@ -131,20 +71,20 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const usuarios = carregarUsuarios();
-  const livros = carregarLivros();
+  const usuarios = window.carregarUsuarios();
+  const livros = await window.carregarLivros();
   const usuario = usuarios.find(u => u.id === emprestimo.usuarioId) || { nome: 'Desconhecido', email: 'N/A' };
   const livro = livros.find(l => l.id === emprestimo.livroId) || { nome: 'Desconhecido' };
 
   document.getElementById('emprestimo-nome').textContent = usuario.nome;
   document.getElementById('emprestimo-email').textContent = usuario.email;
   document.getElementById('emprestimo-livro').textContent = livro.nome;
-  document.getElementById('emprestimo-data-reserva').textContent = formatarData(emprestimo.data);
+  document.getElementById('emprestimo-data-reserva').textContent = window.formatarData(emprestimo.data);
 
   const dataDevolucaoInput = document.getElementById('emprestimo-data-devolucao');
   if (dataDevolucaoInput) {
     const returnDate = emprestimo.dataDevolucao || (emprestimo.ativo ? new Date(new Date(emprestimo.data).setUTCDate(new Date(emprestimo.data).getUTCDate() + 7)).toISOString() : emprestimo.data);
-    dataDevolucaoInput.value = formatarDataParaInput(returnDate);
+    dataDevolucaoInput.value = window.formatarDataParaInput(returnDate);
   } else {
     console.error('emprestimo-data-devolucao not found');
   }
@@ -165,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       emprestimos[emprestimoIndex].dataDevolucao = newDateUTC.toISOString();
-      salvarEmprestimos(emprestimos);
+      window.salvarEmprestimos(emprestimos);
       alert('Data de devolução atualizada com sucesso!');
     });
   } else {
