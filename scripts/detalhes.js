@@ -26,28 +26,7 @@ function voltar() {
   }
 }
 
-// Função para carregar livros do localStorage
-function carregarLivros() {
-  const livrosJSON = localStorage.getItem('livros');
-  return livrosJSON ? JSON.parse(livrosJSON).livros : [];
-}
-
-// Função para salvar livros no localStorage
-function salvarLivros(livros) {
-  localStorage.setItem('livros', JSON.stringify({ livros }));
-}
-
-// Função para carregar empréstimos do localStorage
-function carregarEmprestimos() {
-  return JSON.parse(localStorage.getItem('emprestimos') || '[]');
-}
-
-// Função para salvar empréstimos no localStorage
-function salvarEmprestimos(emprestimos) {
-  localStorage.setItem('emprestimos', JSON.stringify(emprestimos));
-}
-
-function reservar(livroId) {
+async function reservar(livroId) {
   console.log('reservar called for livroId:', livroId); // Debug
   const usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
   const usuarioCorrente = usuarioCorrenteJSON ? JSON.parse(usuarioCorrenteJSON) : null;
@@ -59,7 +38,7 @@ function reservar(livroId) {
     return;
   }
 
-  const livros = carregarLivros();
+  const livros = await window.carregarLivros();
   const livro = livros.find(l => l.id === livroId);
 
   if (!livro) {
@@ -73,7 +52,7 @@ function reservar(livroId) {
   }
 
   // Verificar reserva duplicada
-  const emprestimos = carregarEmprestimos();
+  const emprestimos = window.carregarEmprestimos();
   if (emprestimos.some(e => e.usuarioId === usuarioCorrente.id && e.livroId === livroId && e.ativo)) {
     alert('Você já reservou este livro.');
     return;
@@ -81,7 +60,8 @@ function reservar(livroId) {
 
   // Diminuir quantidade
   livro.qtd -= 1;
-  salvarLivros(livros);
+  const updatedLivros = livros.map(l => l.id === livroId ? livro : l);
+  localStorage.setItem('livros', JSON.stringify({ livros: updatedLivros }));
 
   // Criar registro de empréstimo com status ativo
   const emprestimo = {
@@ -91,7 +71,7 @@ function reservar(livroId) {
     ativo: true
   };
   emprestimos.push(emprestimo);
-  salvarEmprestimos(emprestimos);
+  window.salvarEmprestimos(emprestimos);
 
   alert('Livro reservado com sucesso!');
   // Atualiza a UI com quantidade
@@ -108,7 +88,7 @@ function reservar(livroId) {
 // Garante que a função reservar esteja disponível globalmente
 window.reservar = reservar;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('detalhes.js loaded'); // Debug: Confirm script execution
   const usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
   console.log('DOMContentLoaded usuarioCorrente:', usuarioCorrenteJSON); // Debug
@@ -124,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Carrega livros do localStorage
-  const livros = carregarLivros();
+  // Carrega livros do global carregarLivros
+  const livros = await window.carregarLivros();
   const livro = livros.find(l => l.id === livroId);
 
   if (!livro) {
@@ -154,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('voltarBtn not found');
   }
 
-  // Adiciona event listener para reservarBtn após DOM updates
+  // Adiciona event listener para reservarBtn após atualizações do DOM
   const reservarBtn = document.getElementById('reservarBtn');
   if (reservarBtn) {
     reservarBtn.addEventListener('click', () => {
