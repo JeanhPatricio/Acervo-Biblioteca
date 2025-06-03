@@ -30,7 +30,7 @@ function initLoginApp() {
     db_usuarios = JSON.parse(usuariosJSON);
   }
   toggleNovoUsuarioButton();
-  // Add event listener for tipoAcesso change
+  // Adicionar ouvinte de evento para alteração de tipoAcesso
   const tipoAcessoSelect = document.getElementById('tipoAcesso');
   if (tipoAcessoSelect) {
     tipoAcessoSelect.addEventListener('change', toggleNovoUsuarioButton);
