@@ -3,66 +3,8 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
   return false;
 };
 
-function carregarUsuarios() {
-  const usuariosJSON = localStorage.getItem('db_usuarios');
-  if (!usuariosJSON) {
-    console.warn('db_usuarios not found in localStorage');
-    return [];
-  }
-  try {
-    const parsed = JSON.parse(usuariosJSON);
-    if (parsed && Array.isArray(parsed.usuarios)) {
-      return parsed.usuarios;
-    }
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.error('Error parsing db_usuarios:', e);
-    return [];
-  }
-}
-
-function carregarEmprestimos() {
-  const emprestimosJSON = localStorage.getItem('emprestimos');
-  if (!emprestimosJSON) {
-    console.warn('emprestimos not found in localStorage');
-    return [];
-  }
-  try {
-    return JSON.parse(emprestimosJSON);
-  } catch (e) {
-    console.error('Error parsing emprestimos:', e);
-    return [];
-  }
-}
-
-function formatarData(isoString) {
-  const date = new Date(isoString);
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    timeZone: 'UTC'
-  });
-}
-
-function calcularDataDevolucao(reservationDate) {
-  const date = new Date(reservationDate);
-  date.setUTCDate(date.getUTCDate() + 7);
-  return formatarData(date.toISOString());
-}
-
-function isOverdue(loan) {
-  const now = new Date();
-  if (loan.dataDevolucao) {
-    return new Date(loan.dataDevolucao) < now;
-  }
-  const loanDate = new Date(loan.data);
-  const deadline = new Date(loanDate.getTime() + 7 * 24 * 60 * 60 * 1000);
-  return now > deadline;
-}
-
 function devolverLivro(emprestimoIndex) {
-  let emprestimos = carregarEmprestimos();
+  let emprestimos = window.carregarEmprestimos();
   const emprestimo = emprestimos[emprestimoIndex];
   if (!emprestimo.ativo) {
     alert('Este livro já foi devolvido.');
@@ -72,7 +14,7 @@ function devolverLivro(emprestimoIndex) {
   const now = new Date();
   emprestimos[emprestimoIndex].ativo = false;
   emprestimos[emprestimoIndex].dataDevolucao = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())).toISOString();
-  localStorage.setItem('emprestimos', JSON.stringify(emprestimos));
+  window.salvarEmprestimos(emprestimos);
 
   const livrosJSON = localStorage.getItem('livros');
   if (livrosJSON) {
@@ -90,10 +32,12 @@ function devolverLivro(emprestimoIndex) {
   }
 
   alert('Livro devolvido com sucesso!');
-  exibirEmprestimos(document.getElementById('search')?.value || '');
+  exibirEmprestimos(document.getElementById('search')?.value || '').catch(error => {
+    console.error('Error updating display after return:', error);
+  });
 }
 
-function exibirEmprestimos(termoBusca = '') {
+async function exibirEmprestimos(termoBusca = '') {
   const tbody = document.getElementById('emprestimos-tbody');
   if (!tbody) {
     console.error('emprestimos-tbody not found');
@@ -101,9 +45,9 @@ function exibirEmprestimos(termoBusca = '') {
   }
 
   tbody.innerHTML = '';
-  const emprestimos = carregarEmprestimos();
-  const usuarios = carregarUsuarios();
-  const livros = carregarLivros();
+  const emprestimos = window.carregarEmprestimos();
+  const usuarios = window.carregarUsuarios();
+  const livros = await window.carregarLivros();
 
   console.log('Usuarios:', usuarios);
   console.log('Livros:', livros);
@@ -114,24 +58,24 @@ function exibirEmprestimos(termoBusca = '') {
     const livro = Array.isArray(livros) ? livros.find(l => l.id === emprestimo.livroId) || { nome: 'Desconhecido' } : { nome: 'Desconhecido' };
     const termoLower = termoBusca.toLowerCase();
     return (
-      usuario.nome.toLowerCase().includes(termoLower) ||
-      usuario.email.toLowerCase().includes(termoLower) ||
-      livro.nome.toLowerCase().includes(termoLower)
+      (usuario.nome || '').toLowerCase().includes(termoLower) ||
+      (usuario.email || '').toLowerCase().includes(termoLower) ||
+      (livro.nome || '').toLowerCase().includes(termoLower)
     );
   });
 
   emprestimosFiltrados.forEach((emprestimo, index) => {
     const usuario = Array.isArray(usuarios) ? usuarios.find(u => u.id === emprestimo.usuarioId) || { nome: 'Desconhecido', email: 'N/A' } : { nome: 'Desconhecido', email: 'N/A' };
     const livro = Array.isArray(livros) ? livros.find(l => l.id === emprestimo.livroId) || { nome: 'Desconhecido' } : { nome: 'Desconhecido' };
-    const isLoanOverdue = emprestimo.ativo && isOverdue(emprestimo);
+    const isLoanOverdue = emprestimo.ativo && window.isOverdue(emprestimo);
     const status = emprestimo.ativo ? (isLoanOverdue ? 'Pendente' : 'Ativo') : 'Devolvido';
-    const returnDate = emprestimo.dataDevolucao ? formatarData(emprestimo.dataDevolucao) : (emprestimo.ativo ? calcularDataDevolucao(emprestimo.data) : formatarData(emprestimo.data));
+    const returnDate = emprestimo.dataDevolucao ? window.formatarData(emprestimo.dataDevolucao) : (emprestimo.ativo ? window.calcularDataDevolucao(emprestimo.data) : window.formatarData(emprestimo.data));
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td><a href="emprestimo.html?index=${index}" class="cell-link">${usuario.nome}</a></td>
       <td><a href="emprestimo.html?index=${index}" class="cell-link">${usuario.email}</a></td>
       <td><a href="emprestimo.html?index=${index}" class="cell-link">${livro.nome}</a></td>
-      <td><a href="emprestimo.html?index=${index}" class="cell-link">${formatarData(emprestimo.data)}</a></td>
+      <td><a href="emprestimo.html?index=${index}" class="cell-link">${window.formatarData(emprestimo.data)}</a></td>
       <td><a href="emprestimo.html?index=${index}" class="cell-link">${returnDate}</a></td>
       <td>
         <span class="${status === 'Pendente' ? 'status-pendente' : ''}">${status}</span>
@@ -146,7 +90,7 @@ function exibirEmprestimos(termoBusca = '') {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   console.log('historicobibliotecaria.js loaded');
 
   const usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
@@ -159,13 +103,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  exibirEmprestimos();
+  await exibirEmprestimos();
 
   const searchInput = document.getElementById('search');
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       console.log('Search input:', searchInput.value);
-      exibirEmprestimos(searchInput.value);
+      exibirEmprestimos(searchInput.value).catch(error => {
+        console.error('Error in search:', error);
+      });
     });
   } else {
     console.error('search input not found');
