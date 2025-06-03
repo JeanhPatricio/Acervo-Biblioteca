@@ -33,12 +33,23 @@
         <div class="filterModalConteudo">
           <span class="fechar" id="fecharModal">×</span>
           <h3>Selecione os Gêneros</h3>
-          <label><input type="checkbox" name="genero" value="terror"> Terror e Suspense</label><br>
-          <label><input type="checkbox" name="genero" value="drama"> Drama</label><br>
-          <label><input type="checkbox" name="genero" value="fantasiaFiccao"> Fantasia e Ficção</label><br>
-          <label><input type="checkbox" name="genero" value="bibliografia"> Bibliografia</label><br>
-          <label><input type="checkbox" name="genero" value="quadrinhos"> Quadrinhos</label><br>
-          <label><input type="checkbox" name="genero" value="romance"> Romance</label>
+          <div id="generoList">
+            <label><input type="checkbox" name="genero" value="Fiction"> Ficção</label><br>
+            <label><input type="checkbox" name="genero" value="Nonfiction"> Não-Ficção</label><br>
+            <label><input type="checkbox" name="genero" value="Fantasy"> Fantasia</label><br>
+            <label><input type="checkbox" name="genero" value="Science Fiction"> Ficção Científica</label><br>
+            <label><input type="checkbox" name="genero" value="Mystery"> Mistério</label><br>
+            <label><input type="checkbox" name="genero" value="Thriller"> Suspense</label><br>
+            <label><input type="checkbox" name="genero" value="Romance"> Romance</label><br>
+            <label><input type="checkbox" name="genero" value="Historical"> Histórico</label><br>
+            <label><input type="checkbox" name="genero" value="Biography"> Biografia</label><br>
+            <label><input type="checkbox" name="genero" value="Adventure"> Aventura</label><br>
+            <label><input type="checkbox" name="genero" value="Horror"> Terror</label><br>
+            <label><input type="checkbox" name="genero" value="Poetry"> Poesia</label><br>
+            <label><input type="checkbox" name="genero" value="Drama"> Drama</label><br>
+            <label><input type="checkbox" name="genero" value="Humor"> Humor</label><br>
+            <label><input type="checkbox" name="genero" value="Young Adult"> Jovem Adulto</label><br>
+          </div>
         </div>
       </section>
       <input type="text" id="search" placeholder="Buscar por nome, autor ou publicadora">
@@ -77,7 +88,10 @@
          alert('Faça login para acessar esta página.');
          window.location.href = '../index.html';
       }
-      exibirLivros('tabela-livros');
+      // lida com async exibirLivros
+      exibirLivros('tabela-livros').catch(error => {
+        console.error('Error loading books:', error);
+      });
       configurarBusca('search', 'tabela-livros');
     });
   </script>
