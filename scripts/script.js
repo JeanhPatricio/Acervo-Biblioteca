@@ -29,11 +29,6 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementById('sairBtn')?.addEventListener('click', function() {
     logoutUser();
   });
-
-  // Atualizar Acervo button
-  document.getElementById('atualizarAcervoBtn')?.addEventListener('click', function(event) {
-    console.log('Atualizar Acervo button clicked');
-  });
 });
 
 // Função para gerar UUID
