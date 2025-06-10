@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,10 +10,12 @@
 <body>
   <header>
     <div class="logoLogin">
-      <img src="../imagens/logo.png" alt="Logo do site">
+      <a href="../content/bibliotecaria.html">
+        <img src="../imagens/logo.png" alt="Logo do site">
+      </a>
       <div class="iconesCabecalho">
         <div class="iconeNome" id="voltarBtn">
-          <a href="historicobibliotecaria.html">
+          <a href="../content/historicobibliotecaria.html">
             <span class="icon">⬅️</span><br>
             <span class="textoMenu">Voltar</span>
           </a>
@@ -29,16 +32,19 @@
         <p><strong>Título do Livro:</strong> <span id="emprestimo-livro"></span></p>
         <p><strong>Data da Reserva:</strong> <span id="emprestimo-data-reserva"></span></p>
         <p><strong>Data de Devolução:</strong> <input type="date" id="emprestimo-data-devolucao"></p>
-        <button id="salvarDataBtn" class="btn btn-primary">Salvar Data</button>
-        <button id="devolverBtn" class="btn btn-primary">Devolver</button>
+        <div>
+          <button id="salvarDataBtn" class="btn btn-primary">Salvar Data</button>
+          <button id="devolverBtn" class="btn btn-primary">Devolver</button>
+        </div>
       </div>
     </section>
   </main>
   <script>
     console.log('emprestimo.html: sessionStorage:', sessionStorage.getItem('usuarioCorrente'));
   </script>
-  <script src="../scripts/livros.js"></script>
-  <script src="../scripts/emprestimo.js"></script>
-  <script src="../scripts/utils.js"></script>
+  <script src="/scripts/livros.js"></script>
+  <script src="/scripts/emprestimo.js"></script>
+  <script src="/scripts/utils.js"></script>
+  <script src="/scripts/script.js"></script>
 </body>
 </html>
