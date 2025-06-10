@@ -9,7 +9,9 @@
 <body>
   <header>
     <div class="logoLogin">
-      <img src="../imagens/logo.png" alt="Logo do site">
+      <a href="../content/bibliotecaria.html">
+        <img src="../imagens/logo.png" alt="Logo do site">
+      </a>
       <div class="iconesCabecalho">
         <div class="iconeNome" id="voltarBtn">
           <a href="bibliotecaria.html">
@@ -34,22 +36,25 @@
           <span class="fechar" id="fecharModal">×</span>
           <h3>Selecione os Gêneros</h3>
           <div id="generoList">
-            <label><input type="checkbox" name="genero" value="Fiction"> Ficção</label><br>
-            <label><input type="checkbox" name="genero" value="Nonfiction"> Não-Ficção</label><br>
-            <label><input type="checkbox" name="genero" value="Fantasy"> Fantasia</label><br>
-            <label><input type="checkbox" name="genero" value="Science Fiction"> Ficção Científica</label><br>
-            <label><input type="checkbox" name="genero" value="Mystery"> Mistério</label><br>
-            <label><input type="checkbox" name="genero" value="Thriller"> Suspense</label><br>
-            <label><input type="checkbox" name="genero" value="Romance"> Romance</label><br>
-            <label><input type="checkbox" name="genero" value="Historical"> Histórico</label><br>
-            <label><input type="checkbox" name="genero" value="Biography"> Biografia</label><br>
-            <label><input type="checkbox" name="genero" value="Adventure"> Aventura</label><br>
-            <label><input type="checkbox" name="genero" value="Horror"> Terror</label><br>
-            <label><input type="checkbox" name="genero" value="Poetry"> Poesia</label><br>
-            <label><input type="checkbox" name="genero" value="Drama"> Drama</label><br>
-            <label><input type="checkbox" name="genero" value="Humor"> Humor</label><br>
-            <label><input type="checkbox" name="genero" value="Young Adult"> Jovem Adulto</label><br>
+            <label for="genre-filter-fiction"><input type="checkbox" id="genre-filter-fiction" name="genero" value="Fiction"> Ficção</label><br>
+            <label for="genre-filter-nonfiction"><input type="checkbox" id="genre-filter-nonfiction" name="genero" value="Nonfiction"> Não-Ficção</label><br>
+            <label for="genre-filter-fantasy"><input type="checkbox" id="genre-filter-fantasy" name="genero" value="Fantasy"> Fantasia</label><br>
+            <label for="genre-filter-science-fiction"><input type="checkbox" id="genre-filter-science-fiction" name="genero" value="Science Fiction"> Ficção Científica</label><br>
+            <label for="genre-filter-mystery"><input type="checkbox" id="genre-filter-mystery" name="genero" value="Mystery"> Mistério</label><br>
+            <label for="genre-filter-thriller"><input type="checkbox" id="genre-filter-thriller" name="genero" value="Thriller"> Suspense</label><br>
+            <label for="genre-filter-romance"><input type="checkbox" id="genre-filter-romance" name="genero" value="Romance"> Romance</label><br>
+            <label for="genre-filter-historical"><input type="checkbox" id="genre-filter-historical" name="genero" value="Historical"> Histórico</label><br>
+            <label for="genre-filter-biography"><input type="checkbox" id="genre-filter-biography" name="genero" value="Biography"> Biografia</label><br>
+            <label for="genre-filter-adventure"><input type="checkbox" id="genre-filter-adventure" name="genero" value="Adventure"> Aventura</label><br>
+            <label for="genre-filter-dystopia"><input type="checkbox" id="genre-filter-dystopia" name="genero" value="Dystopia"> Distopia</label><br>
+            <label for="genre-filter-horror"><input type="checkbox" id="genre-filter-horror" name="genero" value="Horror"> Terror</label><br>
+            <label for="genre-filter-poetry"><input type="checkbox" id="genre-filter-poetry" name="genero" value="Poetry"> Poesia</label><br>
+            <label for="genre-filter-drama"><input type="checkbox" id="genre-filter-drama" name="genero" value="Drama"> Drama</label><br>
+            <label for="genre-filter-humor"><input type="checkbox" id="genre-filter-humor" name="genero" value="Humor"> Humor</label><br>
+            <label for="genre-filter-young-adult"><input type="checkbox" id="genre-filter-young-adult" name="genero" value="Young Adult"> Jovem Adulto</label><br>
           </div>
+          <button id="aplicarFiltroBtn" class="btn btn-primary">Aplicar</button>
+          <button id="limparFiltrosBtn" class="btn btn-secondary">Limpar</button>
         </div>
       </section>
       <input type="text" id="search" placeholder="Buscar por nome, autor ou publicadora">
@@ -69,7 +74,7 @@
               <th>Ano</th>
               <th>Autor</th>
               <th>Publicadora</th>
-              <th>Quantidade</th>
+              <th>Quant.</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -105,8 +110,29 @@
           <input type="text" id="publicadora" class="form-control" required>
         </div>
         <div class="form-group">
-          <label for="qtd">Quantidade</label>
+          <label for="qtd">Quant.</label>
           <input type="number" id="qtd" class="form-control" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="generos">Gêneros</label>
+          <div id="generoList" class="genre-container">
+            <label for="genre-book-fiction"><input type="checkbox" id="genre-book-fiction" name="genero" value="Fiction"> Ficção</label><br>
+            <label for="genre-book-nonfiction"><input type="checkbox" id="genre-book-nonfiction" name="genero" value="Nonfiction"> Não-Ficção</label><br>
+            <label for="genre-book-fantasy"><input type="checkbox" id="genre-book-fantasy" name="genero" value="Fantasy"> Fantasia</label><br>
+            <label for="genre-book-science-fiction"><input type="checkbox" id="genre-book-science-fiction" name="genero" value="Science Fiction"> Ficção Científica</label><br>
+            <label for="genre-book-mystery"><input type="checkbox" id="genre-book-mystery" name="genero" value="Mystery"> Mistério</label><br>
+            <label for="genre-book-thriller"><input type="checkbox" id="genre-book-thriller" name="genero" value="Thriller"> Suspense</label><br>
+            <label for="genre-book-romance"><input type="checkbox" id="genre-book-romance" name="genero" value="Romance"> Romance</label><br>
+            <label for="genre-book-historical"><input type="checkbox" id="genre-book-historical" name="genero" value="Historical"> Histórico</label><br>
+            <label for="genre-book-biography"><input type="checkbox" id="genre-book-biography" name="genero" value="Biography"> Biografia</label><br>
+            <label for="genre-book-adventure"><input type="checkbox" id="genre-book-adventure" name="genero" value="Adventure"> Aventura</label><br>
+            <label for="genre-book-dystopia"><input type="checkbox" id="genre-book-dystopia" name="genero" value="Dystopia"> Distopia</label><br>
+            <label for="genre-book-horror"><input type="checkbox" id="genre-book-horror" name="genero" value="Horror"> Terror</label><br>
+            <label for="genre-book-poetry"><input type="checkbox" id="genre-book-poetry" name="genero" value="Poetry"> Poesia</label><br>
+            <label for="genre-book-drama"><input type="checkbox" id="genre-book-drama" name="genero" value="Drama"> Drama</label><br>
+            <label for="genre-book-humor"><input type="checkbox" id="genre-book-humor" name="genero" value="Humor"> Humor</label><br>
+            <label for="genre-book-young-adult"><input type="checkbox" id="genre-book-young-adult" name="genero" value="Young Adult"> Jovem Adulto</label><br>
+          </div>
         </div>
         <div class="form-group">
           <button type="button" class="btn btn-secondary" id="cancelarLivroBtn">Cancelar</button>
@@ -115,7 +141,6 @@
       </form>
     </div>
   </section>
-
   <script src="../scripts/script.js"></script>
   <script src="../scripts/livros.js"></script>
   <script src="../scripts/administracao.js"></script>
