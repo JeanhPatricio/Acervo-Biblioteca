@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const qtdPara = document.createElement('p');
   qtdPara.innerHTML = `<strong>Quantidade disponível:</strong> <span id="livro-qtd">${livro.qtd || 0}</span>`;
   document.getElementById('livro-detalhes').appendChild(qtdPara);
+  document.getElementById('livro-generos').textContent = livro.subjects?.join(', ') || 'Nenhum gênero especificado';
 
   // Adiciona event listener para voltarBtn
   const voltarBtn = document.getElementById('voltarBtn');
