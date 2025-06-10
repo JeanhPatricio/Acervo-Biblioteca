@@ -4,7 +4,10 @@ function logoutUser() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  // Filtrar lógica modal
+  // Determina se a página atual é uma página de admin
+  const isAdminPage = window.location.pathname.includes('administracao.html');
+  
+  // Modal e eventos de filtros
   document.getElementById('abrirFiltroBtn')?.addEventListener('click', function() {
     document.getElementById('modalFiltro').style.display = 'block';
   });
@@ -20,12 +23,35 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   });
 
-  // Botão de Configuração (não implementado)
+  document.getElementById('aplicarFiltroBtn')?.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('#generoList input[type="checkbox"]:checked');
+    const selectedGenres = Array.from(checkboxes).map(cb => cb.value);
+    // Se nenhum gênero estiver selecionado, limpa o filtro
+    const genresToApply = selectedGenres.length > 0 ? selectedGenres : [];
+    // Chama a função de livros.js para aplicar o filtro, passando isAdmin baseado na página
+    window.aplicarFiltroGenero('tabela-livros', genresToApply, isAdminPage).catch(error => {
+      console.error('Error applying genre filter:', error);
+    });
+    // Fecha o modal
+    document.getElementById('modalFiltro').style.display = 'none';
+  });
+
+  // Adiciona evento para o botão Limpar Filtros
+  document.getElementById('limparFiltrosBtn')?.addEventListener('click', () => {
+    document.querySelectorAll('#generoList input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    // Aplica filtro vazio para exibir todos os livros
+    window.aplicarFiltroGenero('tabela-livros', [], isAdminPage).catch(error => {
+      console.error('Error clearing genre filter:', error);
+    });
+    document.getElementById('modalFiltro').style.display = 'none';
+  });
+
   document.getElementById('configBtn')?.addEventListener('click', function() {
     alert('Página de configurações não implementada.');
   });
 
-  // Sair button
   document.getElementById('sairBtn')?.addEventListener('click', function() {
     logoutUser();
   });
@@ -42,12 +68,12 @@ function generateUUID() {
   });
 }
 
-// Dados iniciais dos livros
+// Dados iniciais dos livros com IDs fixos
 const livrosIniciais = {
   livros: [
-    { id: generateUUID(), nome: "Dom Quixote", ano: 1605, autor: "Miguel de Cervantes", publicadora: "Francisco de Robles", qtd: 1 },
-    { id: generateUUID(), nome: "1984", ano: 1949, autor: "George Orwell", publicadora: "Secker & Warburg", qtd: 1 },
-    { id: generateUUID(), nome: "O Senhor dos Anéis", ano: 1954, autor: "J.R.R. Tolkien", publicadora: "Allen & Unwin", qtd: 1 }
+    { id: "book1", nome: "Dom Quixote", ano: 1605, autor: "Miguel de Cervantes", publicadora: "Francisco de Robles", qtd: 1, subjects: ["Fiction", "Adventure"] },
+    { id: "book2", nome: "1984", ano: 1949, autor: "George Orwell", publicadora: "Secker & Warburg", qtd: 1, subjects: ["Fiction", "Dystopia"] },
+    { id: "book3", nome: "O Senhor dos Anéis", ano: 1954, autor: "J.R.R. Tolkien", publicadora: "Allen & Unwin", qtd: 1, subjects: ["Fantasy", "Adventure"] }
   ]
 };
 
@@ -63,3 +89,4 @@ function initLivrosApp() {
 // Exporta funções para uso em outros scripts
 window.generateUUID = generateUUID;
 window.initLivrosApp = initLivrosApp;
+window.livrosIniciais = livrosIniciais;
