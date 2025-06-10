@@ -9,7 +9,9 @@
 <body>
   <header>
     <div class="logoLogin">
-      <img src="../imagens/logo.png" alt="Logo do site">
+      <a href="../content/bibliotecaria.html">
+        <img src="../imagens/logo.png" alt="Logo do site">
+      </a>
       <div class="iconesCabecalho">
         <div class="iconeNome" id="configBtn">
           <span class="icon" id="iconeConfig">⚙️</span><br>
@@ -50,12 +52,15 @@
             <label><input type="checkbox" name="genero" value="Historical"> Histórico</label><br>
             <label><input type="checkbox" name="genero" value="Biography"> Biografia</label><br>
             <label><input type="checkbox" name="genero" value="Adventure"> Aventura</label><br>
+            <label><input type="checkbox" name="genero" value="Dystopia"> Distopia</label><br>
             <label><input type="checkbox" name="genero" value="Horror"> Terror</label><br>
             <label><input type="checkbox" name="genero" value="Poetry"> Poesia</label><br>
             <label><input type="checkbox" name="genero" value="Drama"> Drama</label><br>
             <label><input type="checkbox" name="genero" value="Humor"> Humor</label><br>
             <label><input type="checkbox" name="genero" value="Young Adult"> Jovem Adulto</label><br>
           </div>
+          <button id="aplicarFiltroBtn" class="btn btn-primary">Aplicar</button>
+          <button id="limparFiltrosBtn" class="btn btn-secondary">Limpar</button>
         </div>
       </section>
       <input type="text" id="search" placeholder="Buscar por nome, autor ou publicadora">
@@ -88,18 +93,16 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente') || '{}');
-      console.log('Bibliotecaria: usuarioCorrente:', usuarioCorrente); // Debug
+      console.log('Bibliotecaria: usuarioCorrente:', usuarioCorrente);
       if (!usuarioCorrente.email) {
-        console.log();
         alert('Faça login para acessar esta página.');
         window.location.href = '../index.html';
       }
       if (usuarioCorrente.tipoAcesso !== 'bibliotecaria') {
-        console.log();
         alert('Acesso restrito a bibliotecárias.');
         window.location.href = 'cliente.html';
       }
-      // lida com async exibirLivros
+      initLivrosApp(); // Inicializa os livros a partir de script.js
       exibirLivros('tabela-livros').catch(error => {
         console.error('Error loading books:', error);
       });
