@@ -25,14 +25,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chama a função de carregamento após a inicialização
   await loadLivrosFromStorage();
 
-  function adicionarLivro(nome, ano, autor, publicadora, qtd) {
+  function adicionarLivro(nome, ano, autor, publicadora, qtd, subjects = []) {
     const id = window.generateUUID();
-    const livro = { id, nome, ano, autor, publicadora, qtd };
+    const livro = { id, nome, ano, autor, publicadora, qtd, subjects };
     db_livros.livros.push(livro);
     localStorage.setItem(LIVROS_KEY, JSON.stringify(db_livros));
   }
 
-  function editarLivro(id, nome, ano, autor, publicadora, qtd) {
+  function editarLivro(id, nome, ano, autor, publicadora, qtd, subjects = []) {
     const livro = db_livros.livros.find(l => l.id === id);
     if (livro) {
       livro.nome = nome;
@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       livro.autor = autor;
       livro.publicadora = publicadora;
       livro.qtd = qtd;
+      livro.subjects = subjects; // Update genres
       localStorage.setItem(LIVROS_KEY, JSON.stringify(db_livros));
     }
   }
@@ -58,6 +59,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('livro-id').value = '';
     document.getElementById('qtd').value = '';
     document.getElementById('livroModalLabel').textContent = 'Adicionar Livro';
+    // Clear genre checkboxes
+    document.querySelectorAll('#generoList input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
     document.getElementById('livroModal').style.display = 'block';
   }
 
@@ -70,6 +75,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('publicadora').value = livro.publicadora;
     document.getElementById('qtd').value = livro.qtd;
     document.getElementById('livroModalLabel').textContent = 'Editar Livro';
+    // Set genre checkboxes based on existing subjects
+    document.querySelectorAll('#generoList input[type="checkbox"]').forEach(checkbox => {
+      checkbox.checked = livro.subjects && livro.subjects.includes(checkbox.value);
+    });
     document.getElementById('livroModal').style.display = 'block';
   }
 
@@ -95,10 +104,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
+    // Get selected genres
+    const subjects = Array.from(document.querySelectorAll('#generoList input[type="checkbox"]:checked'))
+      .map(checkbox => checkbox.value);
+
     if (id) {
-      editarLivro(id, nome, ano, autor, publicadora, qtd);
+      editarLivro(id, nome, ano, autor, publicadora, qtd, subjects);
     } else {
-      adicionarLivro(nome, ano, autor, publicadora, qtd);
+      adicionarLivro(nome, ano, autor, publicadora, qtd, subjects);
     }
 
     await window.exibirLivros('tabela-livros', '', true);
