@@ -52,16 +52,18 @@ async function exibirEmprestimos(termoBusca = '') {
   console.log('Usuarios:', usuarios);
   console.log('Livros:', livros);
   console.log('Emprestimos:', emprestimos);
+  console.log('Termo de busca:', termoBusca);
 
   const emprestimosFiltrados = emprestimos.filter((emprestimo, index) => {
     const usuario = Array.isArray(usuarios) ? usuarios.find(u => u.id === emprestimo.usuarioId) || { nome: 'Desconhecido', email: 'N/A' } : { nome: 'Desconhecido', email: 'N/A' };
     const livro = Array.isArray(livros) ? livros.find(l => l.id === emprestimo.livroId) || { nome: 'Desconhecido' } : { nome: 'Desconhecido' };
     const termoLower = termoBusca.toLowerCase();
-    return (
+    const matchesSearch = !termoBusca || // Show all if no search term
       (usuario.nome || '').toLowerCase().includes(termoLower) ||
       (usuario.email || '').toLowerCase().includes(termoLower) ||
-      (livro.nome || '').toLowerCase().includes(termoLower)
-    );
+      (livro.nome || '').toLowerCase().includes(termoLower);
+    console.log(`Filter check for emprestimo ${index}: usuario=${usuario.nome}, livro=${livro.nome}, matches=${matchesSearch}`);
+    return matchesSearch;
   });
 
   emprestimosFiltrados.forEach((emprestimo, index) => {
@@ -92,6 +94,7 @@ async function exibirEmprestimos(termoBusca = '') {
 
 document.addEventListener('DOMContentLoaded', async () => {
   console.log('historicobibliotecaria.js loaded');
+  window.initLivrosApp(); // Ensure initial books are loaded
 
   const usuarioCorrenteJSON = sessionStorage.getItem('usuarioCorrente');
   console.log('DOMContentLoaded usuarioCorrente:', usuarioCorrenteJSON);
