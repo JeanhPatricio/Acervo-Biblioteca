@@ -2,15 +2,15 @@ const LIVROS_KEY = 'livros';
 const CACHE_KEY = 'apiCache';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours em milesegundos
 
-// Estado global para armazenar os gêneros selecionados e o modo admin
-let currentGenres = [];
+// Estado global para armazenar os gêneros selecionados
+let currentFilterGenres = []; // Para filtragem
 let currentIsAdmin = false;
 let currentSearchTerm = '';
 
 // Carrega livros do localStorage e API, preservando edições manuais
 async function carregarLivros() {
   let livros = [];
-  // Load from localStorage first to preserve manual edits
+  // Carregue primeiro do localStorage para preservar as edições manuais
   const livrosJSON = localStorage.getItem(LIVROS_KEY);
   if (livrosJSON) {
     const parsed = JSON.parse(livrosJSON);
@@ -18,7 +18,7 @@ async function carregarLivros() {
     console.log('Loaded books from localStorage:', livros.map(l => ({ nome: l.nome, subjects: l.subjects })));
   }
 
-  // Merge with livrosIniciais only if the book doesn’t exist, without overwriting subjects
+  // Mesclar com livrosIniciais somente se o livro não existir, sem sobrescrever subjects
   const initialBooks = window.livrosIniciais.livros || [];
   initialBooks.forEach(initialBook => {
     const exists = livros.find(l => l.id === initialBook.id);
@@ -28,14 +28,14 @@ async function carregarLivros() {
     }
   });
 
-  // Verifica cache, avoiding default subjects overwrite
+  // Verifica cache, evitando sobrescrever subjects padrão
   const cache = localStorage.getItem(CACHE_KEY);
   const now = new Date().getTime();
   if (cache) {
     const { data, timestamp } = JSON.parse(cache);
     if (now - timestamp < CACHE_DURATION) {
       data.forEach(livro => {
-        // Only add subjects if none exist, respecting manual edits
+        // Adicione apenas assuntos se não houver nenhum, respeitando as edições manuais
         if (!livro.subjects || livro.subjects.length === 0) {
           console.log(`Adding default subjects to cached book: ${livro.nome}`);
           livro.subjects = ["Fiction", "Nonfiction"];
@@ -71,7 +71,7 @@ async function carregarLivros() {
       };
     });
 
-    // Only add new books from API, preserving existing edits
+    // Adicione apenas novos livros da API, preservando as edições existentes
     const newApiBooks = apiLivros.filter(apiBook => !livros.some(stored => stored.id === apiBook.id));
     livros = [...livros, ...newApiBooks];
     livros = removeDuplicates(livros);
@@ -95,7 +95,7 @@ function removeDuplicates(livros) {
 }
 
 // Exibe livros em uma tabela com filtro de gênero
-async function exibirLivros(tabelaId, filtro = '', isAdmin = false, genres = currentGenres) {
+async function exibirLivros(tabelaId, filtro = '', isAdmin = false, genres = currentFilterGenres) {
   const tbody = document.getElementById(tabelaId);
   if (!tbody) return;
   tbody.innerHTML = '';
@@ -154,7 +154,7 @@ async function exibirLivros(tabelaId, filtro = '', isAdmin = false, genres = cur
 
 // Aplica o filtro de gênero e atualiza a tabela
 async function aplicarFiltroGenero(tabelaId, genres, isAdmin) {
-  currentGenres = genres;
+  currentFilterGenres = genres;
   currentIsAdmin = isAdmin;
   await exibirLivros(tabelaId, currentSearchTerm, isAdmin, genres);
 }
@@ -165,7 +165,7 @@ function configurarBusca(inputId, tabelaId, isAdmin = false) {
   if (searchInput) {
     searchInput.addEventListener('input', () => {
       currentSearchTerm = searchInput.value;
-      exibirLivros(tabelaId, currentSearchTerm, isAdmin, currentGenres).catch(error => {
+      exibirLivros(tabelaId, currentSearchTerm, isAdmin, currentFilterGenres).catch(error => {
         console.error('Error in search:', error);
       });
     });
