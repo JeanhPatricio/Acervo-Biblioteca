@@ -178,6 +178,28 @@ header {
   background-color: #145a32;
 }
 
+fieldset {
+  padding: 0;
+  margin: 0;
+}
+
+legend {
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+input[type="checkbox"] {
+  color: initial; 
+  accent-color: auto;
+  margin-right: 5px;
+}
+
+.genre-container {
+  margin-left: 20px;
+}
+
 .fechar {
   color: #aaa;
   float: right;
