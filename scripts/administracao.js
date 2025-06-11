@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const LIVROS_KEY = 'livros';
   let db_livros = { livros: [] };
+  let currentBookGenres = []; // Para adicionar/editar gêneros de livros
 
   // Inicializa os livros usando a função global
   window.initLivrosApp();
@@ -59,8 +60,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('livro-id').value = '';
     document.getElementById('qtd').value = '';
     document.getElementById('livroModalLabel').textContent = 'Adicionar Livro';
-    // Clear genre checkboxes
-    document.querySelectorAll('#generoList input[type="checkbox"]').forEach(checkbox => {
+    // Limpar caixas de seleção de gênero no modal de livro
+    currentBookGenres = [];
+    document.querySelectorAll('input[id^="genre-book-"]').forEach(checkbox => {
       checkbox.checked = false;
     });
     document.getElementById('livroModal').style.display = 'block';
@@ -75,9 +77,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('publicadora').value = livro.publicadora;
     document.getElementById('qtd').value = livro.qtd;
     document.getElementById('livroModalLabel').textContent = 'Editar Livro';
-    // Set genre checkboxes based on existing subjects
-    document.querySelectorAll('#generoList input[type="checkbox"]').forEach(checkbox => {
-      checkbox.checked = livro.subjects && livro.subjects.includes(checkbox.value);
+    // Defina caixas de seleção de gênero com base em assuntos existentes no modal do livro
+    currentBookGenres = livro.subjects || [];
+    document.querySelectorAll('input[id^="genre-book-"]').forEach(checkbox => {
+      checkbox.checked = currentBookGenres.includes(checkbox.value);
     });
     document.getElementById('livroModal').style.display = 'block';
   }
@@ -104,8 +107,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    // Get selected genres
-    const subjects = Array.from(document.querySelectorAll('#generoList input[type="checkbox"]:checked'))
+    // Obtenha gêneros selecionados no modal de livros
+    const subjects = Array.from(document.querySelectorAll('input[id^="genre-book-"]:checked'))
       .map(checkbox => checkbox.value);
 
     if (id) {
