@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   document.getElementById('aplicarFiltroBtn')?.addEventListener('click', () => {
-    const checkboxes = document.querySelectorAll('#generoList input[type="checkbox"]:checked');
+    const checkboxes = document.querySelectorAll('input[id^="genre-filter-"]:checked');
     const selectedGenres = Array.from(checkboxes).map(cb => cb.value);
     // Se nenhum gênero estiver selecionado, limpa o filtro
     const genresToApply = selectedGenres.length > 0 ? selectedGenres : [];
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Adiciona evento para o botão Limpar Filtros
   document.getElementById('limparFiltrosBtn')?.addEventListener('click', () => {
-    document.querySelectorAll('#generoList input[type="checkbox"]').forEach(checkbox => {
+    document.querySelectorAll('input[id^="genre-filter-"]').forEach(checkbox => {
       checkbox.checked = false;
     });
     // Aplica filtro vazio para exibir todos os livros
