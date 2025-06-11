@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JK Falg - Login</title>
-  <link rel="stylesheet" href="/styles/login.css">
+  <title>JK Falg - Cliente</title>
+  <link rel="stylesheet" href="../styles/cliente.css">
 </head>
 <body>
   <header>
     <div class="logoLogin">
-      <a href="../index.html">
+      <a href="../content/cliente.html">
         <img src="../imagens/logo.png" alt="Logo do site">
       </a>
       <div class="iconesCabecalho">
@@ -17,67 +17,92 @@
           <span class="icon" id="iconeConfig">⚙️</span><br>
           <span class="textoMenu">Config</span>
         </div>
-        <div class="iconeNome" id="voltarBtn">
-          <a href="../index.html">
-            <span class="icon">⬅️</span><br>
-            <span class="textoMenu">Voltar</span>
+        <div class="iconeNome" id="historicoBtn">
+          <a href="historicocliente.html">
+            <span class="icon">📜</span><br>
+            <span class="textoMenu">Histórico</span>
           </a>
         </div>
+        <div id="sairBtn" class="iconeNome">
+          <span class="icon">👤</span><br>
+          <span class="textoMenu">Sair</span>
+        </div>
       </div>
+    </div>
+    <div class="areaPesquisa">
+      <button id="abrirFiltroBtn">Filtro</button>
+      <section id="modalFiltro" class="filterModal">
+        <div class="filterModalConteudo">
+          <span class="fechar" id="fecharModal">×</span>
+          <h3>Selecione os Gêneros</h3>
+          <div id="generoList">
+            <label><input type="checkbox" id="genre-filter-fiction" name="genero" value="Fiction"> Ficção</label><br>
+            <label><input type="checkbox" id="genre-filter-nonfiction" name="genero" value="Nonfiction"> Não-Ficção</label><br>
+            <label><input type="checkbox" id="genre-filter-fantasy" name="genero" value="Fantasy"> Fantasia</label><br>
+            <label><input type="checkbox" id="genre-filter-science-fiction" name="genero" value="Science Fiction"> Ficção Científica</label><br>
+            <label><input type="checkbox" id="genre-filter-mystery" name="genero" value="Mystery"> Mistério</label><br>
+            <label><input type="checkbox" id="genre-filter-thriller" name="genero" value="Thriller"> Suspense</label><br>
+            <label><input type="checkbox" id="genre-filter-romance" name="genero" value="Romance"> Romance</label><br>
+            <label><input type="checkbox" id="genre-filter-historical" name="genero" value="Historical"> Histórico</label><br>
+            <label><input type="checkbox" id="genre-filter-biography" name="genero" value="Biography"> Biografia</label><br>
+            <label><input type="checkbox" id="genre-filter-adventure" name="genero" value="Adventure"> Aventura</label><br>
+            <label><input type="checkbox" id="genre-filter-dystopia" name="genero" value="Dystopia"> Distopia</label><br>
+            <label><input type="checkbox" id="genre-filter-horror" name="genero" value="Horror"> Terror</label><br>
+            <label><input type="checkbox" id="genre-filter-poetry" name="genero" value="Poetry"> Poesia</label><br>
+            <label><input type="checkbox" id="genre-filter-drama" name="genero" value="Drama"> Drama</label><br>
+            <label><input type="checkbox" id="genre-filter-humor" name="genero" value="Humor"> Humor</label><br>
+            <label><input type="checkbox" id="genre-filter-young-adult" name="genero" value="Young Adult"> Jovem Adulto</label><br>
+          </div>
+          <button id="aplicarFiltroBtn" class="btn btn-primary">Aplicar</button>
+          <button id="limparFiltrosBtn" class="btn btn-secondary">Limpar</button>
+        </div>
+      </section>
+      <input type="text" id="search" placeholder="Buscar por nome, autor ou publicadora">
+      <button id="buscaBtn">🔍</button>
     </div>
   </header>
-  <div class="container">
-    <div class="bemvindo">
-      <form id="loginForm">
-        <h3>Login</h3>
-        <label for="tipoAcesso">Tipo de Acesso</label>
-        <select id="tipoAcesso" required>
-          <option value="cliente">Cliente</option>
-          <option value="bibliotecaria">Bibliotecário(a)</option>
-        </select>
-        <label for="email">Email</label>
-        <input type="email" id="email" required>
-        <label for="password">Senha</label>
-        <input type="password" id="password" required>
-        <div class="btnEntrar">
-          <button type="submit">Entrar</button>
-        </div>
-      </form>
-      <div id="novoUsuarioContainer">
-        <button id="btnNovoUsuario">Novo Usuário</button>
+  <main>
+    <section class="bemvindo">
+      <h2>BEM-VINDO, CLIENTE!</h2>
+      <div>
+        <p>O sistema de biblioteca virtual foi desenvolvido para automatizar e otimizar o gerenciamento de empréstimos
+          de livros. Nele, os leitores podem: Consultar a disponibilidade de obras em tempo real; Realizar reservas de
+          forma ágil; Explorar o acervo completo com buscas intuitivas; Receber indicações personalizadas com base em
+          seu histórico de leitura. Tudo isso para garantir uma experiência mais eficiente e adaptada às necessidades
+          dos usuários.</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Ano</th>
+              <th>Autor</th>
+              <th>Publicadora</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-livros">
+            <!-- Livros serão inseridos dinamicamente -->
+          </tbody>
+        </table>
       </div>
-    </div>
-  </div>
-  <!-- Modal -->
-  <div id="modalOverlay" class="modal-overlay hidden">
-    <div class="modal">
-      <div class="modal-header">
-        <button class="btn-close" id="fecharModal">×</button>
-        <h3>Novo Usuário</h3>
-      </div>
-      <div class="modal-body">
-        <form id="registerForm">
-          <label for="tipoAcessoReg">Tipo de Acesso</label>
-          <select id="tipoAcessoReg" required>
-            <option value="cliente">Cliente</option>
-            <option value="bibliotecaria">Bibliotecária</option>
-          </select>
-          <label for="txt_nome">Nome Completo</label>
-          <input type="text" id="txt_nome" required>
-          <label for="txt_email">Email</label>
-          <input type="email" id="txt_email" required>
-          <label for="txt_senha">Senha</label>
-          <input type="password" id="txt_senha" required>
-          <label for="txt_senha2">Confirmação de Senha</label>
-          <input type="password" id="txt_senha2" required>
-          <div class="modal-footer">
-            <button type="button" id="cancelar">Cancelar</button>
-            <button type="button" id="btn_salvar">Salvar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <script src="../scripts/login.js"></script>
+    </section>
+  </main>
+  <script src="../scripts/script.js"></script>
+  <script src="../scripts/livros.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const usuarioCorrente = JSON.parse(sessionStorage.getItem('usuarioCorrente') || '{}');
+      console.log('Cliente: usuarioCorrente:', usuarioCorrente); // Debug
+      if (!usuarioCorrente.email) {
+        console.log();
+         alert('Faça login para acessar esta página.');
+         window.location.href = '../index.html';
+      }
+      // lida com async exibirLivros
+      exibirLivros('tabela-livros').catch(error => {
+        console.error('Error loading books:', error);
+      });
+      configurarBusca('search', 'tabela-livros');
+    }); 
+  </script>
 </body>
 </html>
