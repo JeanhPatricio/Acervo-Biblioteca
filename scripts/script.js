@@ -48,10 +48,6 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('modalFiltro').style.display = 'none';
   });
 
-  document.getElementById('configBtn')?.addEventListener('click', function() {
-    alert('Página de configurações não implementada.');
-  });
-
   document.getElementById('sairBtn')?.addEventListener('click', function() {
     logoutUser();
   });
